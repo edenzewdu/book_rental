@@ -11,5 +11,9 @@ class Book extends Model
 {
     return $this->hasMany(Rental::class);
 }
+protected $fillable = [
+    'title', 'author', 'genre', 'published_year', 'isbn', 'available',
+    'donor', 'donor_phone', 'usage_status', 'cover_image',
+];
 
 }
