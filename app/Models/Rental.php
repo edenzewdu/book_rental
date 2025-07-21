@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rental extends Model
 {
-    //
+    public function book()
+{
+    return $this->belongsTo(Book::class);
+}
+
 }
