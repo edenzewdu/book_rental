@@ -7,6 +7,17 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    
+    <form method="GET" action="{{ route('books.index') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search books..." value="{{ request('search') }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+
+     <a href="{{ route('books.export') }}" class="btn btn-success">Export Books</a>
+
+    
 
     <table class="table table-striped">
         <thead>
@@ -19,6 +30,7 @@
                 <th>ISBN</th>
                 <th>Donor</th>
                 <th>Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +47,16 @@
                 <td>{{ $book->isbn }}</td>
                 <td>{{ $book->donor }}<br><small>{{ $book->donor_phone }}</small></td>
                 <td>{{ $book->available ? '✅ Available' : '❌ Rented' }}</td>
+                <td>
+                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                    <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+                    </form>
+                </td>
             </tr>
             @empty
             <tr>

@@ -41,9 +41,61 @@ class BookController extends Controller
         return redirect()->back()->with('success', 'Book added successfully.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::latest()->get();
+        $query = Book::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                ->orWhere('author', 'like', "%$search%")
+                ->orWhere('genre', 'like', "%$search%")
+                ->orWhere('isbn', 'like', "%$search%")
+                ->orWhere('donor', 'like', "%$search%")
+                ->orWhere('donor_phone', 'like', "%$search%");
+            });
+        }
+
+        $books = $query->latest()->paginate(10); // Or ->get() if you don’t want pagination
+
         return view('books.index', compact('books'));
     }
+
+    public function edit($id)
+    {
+        $book = Book::findOrFail($id);
+        return view('books.edit', compact('book'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'isbn' => 'required|string|unique:books,isbn,' . $id,
+            // add other validations as needed
+        ]);
+
+        $book = Book::findOrFail($id);
+
+        $book->update($request->all());
+
+        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $book = Book::findOrFail($id);
+        return view('books.show', compact('book'));
+    }
+
 }
