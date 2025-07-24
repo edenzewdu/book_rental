@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookImportController;
 use App\Http\Controllers\BookExportController;
+use App\Http\Controllers\RentController;
 
 // Redirect root to login page
 Route::get('/', fn () => redirect()->route('login'));
@@ -42,3 +43,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/users/books', [BookController::class, 'showBooks'])->name('books.list');
 Route::get('/users/books/{book}', [BookController::class, 'show'])->name('books.show');
+Route::post('/books/{book}/rent', [RentController::class, 'rent'])->name('books.rent');
