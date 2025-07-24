@@ -19,10 +19,11 @@ class BookController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $coverPath = 'defaults/book.png'; // default image path
 
-        if ($request->hasFile('cover_image')) {
-            $coverPath = $request->file('cover_image')->store('covers', 'public');
+        if ($request->hasFile('book_image')) {
+            $coverPath = $request->file('book_image')->store('covers', 'public');
+        } else {
+            $coverPath = null;
         }
 
         Book::create([
@@ -35,7 +36,7 @@ class BookController extends Controller
             'donor' => $request->donor,
             'donor_phone' => $request->donor_phone,
             'usage_status' => $request->usage_status,
-            'cover_image' => $coverPath,
+            'image_path' => $coverPath,
         ]);
 
         return redirect()->back()->with('success', 'Book added successfully.');
@@ -74,15 +75,41 @@ class BookController extends Controller
         $request->validate([
             'title' => 'required|string',
             'isbn' => 'required|string|unique:books,isbn,' . $id,
-            // add other validations as needed
+            'book_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $book = Book::findOrFail($id);
 
-        $book->update($request->all());
+        $data = $request->only([
+            'title', 'author', 'genre', 'published_year', 'isbn', 'available',
+            'donor', 'donor_phone', 'usage_status'
+        ]);
+
+        // Remove existing image if checkbox is selected
+        if ($request->has('remove_image') && $book->image_path) {
+            if (\Storage::disk('public')->exists($book->image_path)) {
+                \Storage::disk('public')->delete($book->image_path);
+            }
+            $data['image_path'] = null;
+        }
+
+        // Replace image if a new one was uploaded
+        if ($request->hasFile('book_image')) {
+            // Delete old image
+            if ($book->image_path && \Storage::disk('public')->exists($book->image_path)) {
+                \Storage::disk('public')->delete($book->image_path);
+            }
+
+            // Store new one
+            $coverPath = $request->file('book_image')->store('covers', 'public');
+            $data['image_path'] = $coverPath;
+        }
+
+        $book->update($data);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully.');
     }
+
 
     public function destroy($id)
     {
@@ -98,4 +125,10 @@ class BookController extends Controller
         return view('books.show', compact('book'));
     }
 
+    public function showBooks()
+    {
+        $books = Book::all();
+        $authors = Book::select('author')->distinct()->pluck('author');
+        return view('books', compact('books', 'authors'));
+    }
 }

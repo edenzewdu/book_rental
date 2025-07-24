@@ -1,4 +1,10 @@
 <?php
+namespace App\Exports;
+
+use App\Models\Book;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
@@ -34,23 +40,26 @@ class BooksExport implements FromCollection, WithHeadings, WithMapping, WithDraw
             $book->donor,
             $book->donor_phone,
             $book->usage_status,
-            '', // Leave image cell blank – the drawing will appear here
+            '', // Image will be added via drawings()
         ];
     }
 
     public function drawings()
     {
         $drawings = [];
-        $row = 2; // Start from Excel row 2 (after headings)
+        $row = 2; // Headings are in row 1
 
         foreach ($this->books as $book) {
-            if ($book->image_path && file_exists(public_path('storage/' . $book->image_path))) {
+            $path = public_path('storage/' . $book->image_path);
+
+            if ($book->image_path && file_exists($path)) {
                 $drawing = new Drawing();
                 $drawing->setName('Book Image');
                 $drawing->setDescription($book->title);
-                $drawing->setPath(public_path('storage/' . $book->image_path)); // image path
-                $drawing->setHeight(60); // image size
-                $drawing->setCoordinates('K' . $row); // Column K = 11th column (image column)
+                $drawing->setPath($path);
+                $drawing->setHeight(60);
+                $drawing->setCoordinates('K' . $row); // 11th column
+
                 $drawings[] = $drawing;
             }
 

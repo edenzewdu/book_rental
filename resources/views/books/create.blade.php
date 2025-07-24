@@ -4,6 +4,13 @@
 <div class="container">
     <h2>Add New Book</h2>
 
+    {{-- Success message --}}
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     {{-- Display any validation errors --}}
     @if ($errors->any())
         <div class="alert alert-danger">

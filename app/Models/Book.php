@@ -13,7 +13,7 @@ class Book extends Model
 }
 protected $fillable = [
     'title', 'author', 'genre', 'published_year', 'isbn', 'available',
-    'donor', 'donor_phone', 'usage_status', 'cover_image',
+    'donor', 'donor_phone', 'usage_status', 'image_path',
 ];
 
 }

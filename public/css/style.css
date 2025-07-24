@@ -1,0 +1,307 @@
+/* Reset and base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.5s, color 0.5s;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Light Mode */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #111;
+    color: goldenrod;
+}
+
+body.dark-mode form {
+    background-color: #1a1a1a;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+body.dark-mode input {
+    background-color: #2a2a2a;
+    color: goldenrod;
+    border: 1px solid goldenrod;
+}
+
+body.dark-mode input:focus {
+    border-color: gold;
+}
+
+body.dark-mode button[type="submit"] {
+    background-color: goldenrod;
+    color: black;
+}
+
+body.dark-mode button[type="submit"]:hover {
+    background-color: gold;
+}
+
+/* Toggle Button */
+.toggle-switch {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.toggle-slider {
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-slider::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: #ffcc00;
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(30px);
+}
+
+/* Links */
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+body.dark-mode p a {
+    color: gold;
+}
+
+.book-image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* Overlay only when default */
+.image-title-overlay {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    padding: 2px 5px;
+    font-size: 10px;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Light mode (white theme) */
+body.light-mode {
+    background-color: #ffffff;
+    color: #000;
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* Dark mode (black + golden theme) */
+body.dark-mode {
+    background-color: #121212;
+    color: #f0c040;
+}
+
+.title {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2rem;
+}
+
+/* Toggle button */
+.toggle-container {
+    text-align: right;
+    margin: 15px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 25px;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 3.5px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: #f0c040;
+}
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Book card grid */
+.book-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px;
+}
+
+/* Book card */
+.book-card {
+    width: 150px;
+    height: 200px;
+    position: relative;
+}
+
+.book-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.book-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-title {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 4px black;
+    background: rgba(0,0,0,0.3);
+    padding: 2px 5px;
+}
+
+.book-author {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    color: white;
+    text-shadow: 1px 1px 4px black;
+    background: rgba(0,0,0,0.3);
+    padding: 1px 4px;
+    border-radius: 5px;
+}
